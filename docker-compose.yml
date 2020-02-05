@@ -1,0 +1,28 @@
+version: '3'
+services:
+  web:
+    container_name: crawler
+    build: ./python
+    ports:
+      - 6000:5000
+    volumes:
+      - ./app:/code
+    environment:
+      FLASK_ENV: development
+    links:
+      - mysql
+
+  redis:
+    image: "redis:alpine"
+
+  mysql:
+    image: mysql:5.7
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=scrapy_practice
+    ports:
+      - 6066:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
